@@ -93,6 +93,8 @@ class GlobalVariables {
   static List category = [];
   static int selectedCategoryIndex = 0;
   static String selectedCategoryName = '';
+  static String vendorcode = '';
+
   //category list
 
   //product list

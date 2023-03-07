@@ -34,7 +34,6 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-
     if (GlobalVariables.menu0loaded == false) {
       _getAppVersion();
       check();
@@ -195,9 +194,9 @@ class _HomeState extends State<Home> {
                               if (mounted) setState(() {});
                               GlobalVariables.selectedCategoryName =
                                   GlobalVariables.category10[index]
-                                      ['category_name'];
+                                      ['vendor_code'];
                               _selectedCat = GlobalVariables.category10[index]
-                                  ['category_name'];
+                                  ['principal_name'];
                               GlobalVariables.product50 = [];
                               var p = await getProducts(context,
                                   GlobalVariables.selectedCategoryName, 50);
@@ -240,26 +239,44 @@ class _HomeState extends State<Home> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Spacer(),
-                                  Container(
-                                    width: appBarSize - 5,
-                                    height: appBarSize - 5,
-                                    decoration: new BoxDecoration(
-                                      color: GlobalVariables.catColor[index],
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: Icon(
-                                        index != 9
-                                            ? CupertinoIcons.doc_richtext
-                                            : CupertinoIcons.bars,
-                                        color: Colors.white),
-                                  ),
+
+                                    CachedNetworkImage(
+                                              imageUrl: ServerUrl.principalImg +
+                                                  GlobalVariables.category10[index]
+                                                  ['company_code'] +'.png',
+                                              placeholder: (context, url) => Center(
+                                                  child:
+                                                      CircularProgressIndicator()),
+                                              errorWidget:
+                                                  (context, url, error) => Icon(
+                                                      Icons.image,
+                                                      color: Colors.redAccent
+                                                      // color: Colors.grey[200]
+                                                  ),
+                                            ),
+                                  // Container(
+                                  //   width: appBarSize - 5,
+                                  //   height: appBarSize - 5,
+                                  //   decoration: new BoxDecoration(
+                                  //
+                                  //     // image: ServerUrl.principalImg + GlobalVariables.category10[index]
+                                  //     // ['principal_name']
+                                  //     color: GlobalVariables.catColor[index],
+                                  //     shape: BoxShape.circle,
+                                  //   ),
+                                  //   child: Icon(
+                                  //       index != 9
+                                  //           ? CupertinoIcons.doc_richtext
+                                  //           : CupertinoIcons.bars,
+                                  //       color: Colors.white),
+                                  // ),
                                   Spacer(),
                                   Padding(
                                     padding: const EdgeInsets.all(1),
                                     child: Text(
                                         index != 9
                                             ? GlobalVariables.category10[index]
-                                                ['category_name']
+                                                ['principal_name']
                                             : "\nSEE MORE\n",
                                         style: TextStyle(
                                             fontSize: ScreenUtil().setSp(9)),
@@ -620,12 +637,15 @@ class _HomeState extends State<Home> {
     if (con == 'OKAY') {
       // var cat = await getCategories(context, 10);
       var cat = await getCategories(context, 10);
+      print('PRINCIPALS: $cat');
       if (cat != null) {
         GlobalVariables.category10 = cat;
         // GlobalVariables.category10
         //     .sort((a, b) => int.parse(a['id']).compareTo(int.parse(b['id'])));
+        // GlobalVariables.selectedCategoryName =
+        //     GlobalVariables.category10[0]['category_name'];
         GlobalVariables.selectedCategoryName =
-            GlobalVariables.category10[0]['category_name'];
+        GlobalVariables.category10[0]['vendor_code'];
         GlobalVariables.selectedCategoryIndex = 0;
 
         var min = await getMinOrder(context);
@@ -644,6 +664,7 @@ class _HomeState extends State<Home> {
 
         var p = await getProducts(
             context, GlobalVariables.selectedCategoryName, 50);
+        print('GET PRODUCTS: $p');
         if (p != null) {
           GlobalVariables.product50 = p;
         }
@@ -655,7 +676,7 @@ class _HomeState extends State<Home> {
         } else {
           print(GlobalVariables.appVersion);
           print(GlobalVariables.trigVarUPDTE);
-          showPop();
+          // showPop();
         }
       }
     }

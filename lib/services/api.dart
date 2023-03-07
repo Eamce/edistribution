@@ -330,13 +330,14 @@ Future getCutOffTime(BuildContext context) async {
 
 Future getCategories(BuildContext context, int limit) async {
   try {
-    var url = Uri.parse(ServerUrl.urlCI + "mapiv2/getCategories");
+    var url = Uri.parse(ServerUrl.urlCI + "mapiv2/getPrincipals");
     final response = await http.post(url,
         headers: {"Accept": "Application/json"},
         body: {'limit': encrypt(limit.toString())});
     print(response.statusCode);
     if (response.statusCode == 200) {
-      var convertedDataToJson = jsonDecode(decrypt(response.body));
+      // var convertedDataToJson = jsonDecode(decrypt(response.body));
+      var convertedDataToJson = jsonDecode(response.body);
       return convertedDataToJson;
     } else if (response.statusCode >= 400 || response.statusCode <= 499) {
       customModal(
@@ -436,15 +437,17 @@ Future getCategories(BuildContext context, int limit) async {
 }
 
 Future getProducts(BuildContext context, String name, int limit) async {
+  print('VENDOR CODE: $name');
   try {
-    var url = Uri.parse(ServerUrl.urlCI + "mapiv2/getProducts");
+    var url = Uri.parse(ServerUrl.urlCI + "mapiv2/getProducts_test");
     final response = await http.post(url, headers: {
       "Accept": "Application/json"
     }, body: {
       'accountcode': encrypt(GlobalVariables.logcustomerCode.isNotEmpty
           ? GlobalVariables.logcustomerCode
           : 'null'),
-      'category': encrypt(name),
+      // 'category': encrypt(name),
+      'vendor_code': encrypt(name),
       'limit': encrypt(limit.toString()),
     });
     print(response.statusCode);
@@ -550,14 +553,15 @@ Future getProducts(BuildContext context, String name, int limit) async {
 
 Future getProductsOffset(BuildContext context, String name, int offset) async {
   try {
-    var url = Uri.parse(ServerUrl.urlCI + "mapiv2/getProductsOffset");
+    var url = Uri.parse(ServerUrl.urlCI + "mapiv2/getProductsOffset_test");
     final response = await http.post(url, headers: {
       "Accept": "Application/json"
     }, body: {
       'accountcode': encrypt(GlobalVariables.logcustomerCode.isNotEmpty
           ? GlobalVariables.logcustomerCode
           : 'null'),
-      'category': encrypt(name),
+      // 'category': encrypt(name),
+      'vendor_code': encrypt(name),
       'offset': encrypt(offset.toString()),
     });
     print(response.statusCode);

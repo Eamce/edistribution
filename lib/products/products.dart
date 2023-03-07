@@ -360,7 +360,7 @@ class _ProductsState extends State<Products> with TickerProviderStateMixin {
   productsDrawerSelected(int index) async {
     GlobalVariables.product = [];
     GlobalVariables.selectedCategoryName =
-        GlobalVariables.category[index]['category_name'];
+        GlobalVariables.category[index]['vendor_code'];
     offset = 0;
     var p = await getProductsOffset(
         context, GlobalVariables.selectedCategoryName, offset);
@@ -488,7 +488,7 @@ class _ProductsState extends State<Products> with TickerProviderStateMixin {
                                 height: size.height / 20,
                                 child: Text(
                                     GlobalVariables.category[index]
-                                        ['category_name'],
+                                        ['principal_name'],
                                     style: TextStyle(
                                         color: drawerSelectedCat == index
                                             ? brandingColor
